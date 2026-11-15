@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nouvel onglet</title>
+  <link rel="icon" href="icons/icon48.png">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/widgets.css">
+  <link rel="stylesheet" href="css/panels.css">
+</head>
+<body data-panel-theme="dark" data-clock-size="l">
+
+<!-- Jeu d'icônes dessiné pour Onze -->
+<svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true">
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13.5a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10.5a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 2M9.5 2.5h5"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24"><path d="M3 11v2M7 8v8M11 4v16M15 7v10M19 10v4"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM9.5 12h6M9.5 16h6"/></symbol>
+  <symbol id="i-habit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.8 2.8L16 9.5"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3.2 3.4 3.2 14.6 0 18M12 3c-3.2 3.4-3.2 14.6 0 18"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h9M19 6h1M4 12h3M13 12h7M4 18h11"/><circle cx="16" cy="6" r="2.2"/><circle cx="10" cy="12" r="2.2"/><circle cx="17.5" cy="18" r="2.2"/></symbol>
+  <symbol id="i-tasks" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 12.3l2.5 2.5 4.5-5.3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><path stroke-width="2.8" d="M5 12h.01M12 12h.01M19 12h.01"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z"/></symbol>
+  <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.7 5.7l12.6 12.6"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v5h-5"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+</svg>
+
+<!-- Fond d'écran -->
+<div id="bg" aria-hidden="true">
+  <div class="bg-layer"></div>
+  <div class="bg-layer"></div>
+  <div class="bg-veil"></div>
+</div>
+
+<div id="app">
+  <header class="top">
+    <nav class="dock" aria-label="Outils">
+      <button type="button" class="corner" data-widget="links" data-panel="panel-links" aria-expanded="false"><svg class="icon"><use href="#i-link"/></svg><span>Liens</span></button>
+      <button type="button" class="corner" data-widget="pomodoro" data-panel="panel-pomodoro" aria-expanded="false"><svg class="icon"><use href="#i-timer"/></svg><span id="pomo-badge">Focus</span></button>
+      <button type="button" class="corner" id="tools-btn" data-widget-group="sounds notes habits worldclocks countdowns" data-panel="panel-tools" aria-expanded="false"><svg class="icon"><use href="#i-grid"/></svg><span>Outils</span></button>
+      <button type="button" class="corner" data-widget="search" data-panel="panel-search" aria-expanded="false"><svg class="icon"><use href="#i-search"/></svg><span>Chercher</span></button>
+    </nav>
+
+    <form id="search-bar" class="search-bar" data-widget="searchbar" role="search" autocomplete="off">
+      <svg class="icon"><use href="#i-search"/></svg>
+      <input id="search-bar-input" type="search" aria-label="Rechercher sur le Web" placeholder="Rechercher">
+    </form>
+
+    <button type="button" id="weather-btn" class="corner weather" data-widget="weather" data-panel="panel-weather" aria-expanded="false" title="Météo">
+      <b><span id="weather-icon" aria-hidden="true">⛅</span> <span id="weather-temp">–</span></b>
+      <span id="weather-city">Météo</span>
+    </button>
+  </header>
+
+  <main class="center">
+    <div id="focus-display" class="focus-display" hidden>
+      <p id="fd-phase" class="eyebrow">Concentration</p>
+      <div id="fd-time" class="clock" role="timer" aria-live="off">25:00</div>
+      <div class="fd-actions">
+        <button type="button" id="fd-toggle" class="pill">Pause</button>
+        <button type="button" id="fd-stop" class="pill">Arrêter</button>
+      </div>
+    </div>
+
+    <time id="clock" class="clock" data-widget="clock"><span id="clock-time">00:00</span><span id="clock-sec" class="clock-sec"></span><span id="clock-ampm" class="clock-ampm"></span></time>
+
+    <p id="greeting" class="greeting" data-widget="greeting"><span id="greeting-text">Bonjour</span>, <span id="name" class="name" role="textbox" aria-label="Votre prénom (modifiable)" contenteditable="plaintext-only" spellcheck="false" title="Cliquez pour modifier votre prénom"></span>.</p>
+
+    <section id="focus" class="goal" data-widget="focus" aria-label="Priorité du jour">
+      <form id="focus-form">
+        <label for="focus-input">Qu'est-ce qui compte le plus aujourd'hui ?</label>
+        <input id="focus-input" type="text" maxlength="120" autocomplete="off">
+      </form>
+      <div id="focus-set" class="goal-set" hidden>
+        <p class="eyebrow">Ma priorité du jour</p>
+        <div class="goal-row">
+          <label><input type="checkbox" class="ck" id="focus-done"><span id="focus-text"></span></label>
+          <button type="button" id="focus-clear" class="round small" aria-label="Supprimer l'objectif" title="Supprimer l'objectif"><svg class="icon"><use href="#i-close"/></svg></button>
+        </div>
+        <p id="focus-cheer" class="cheer" role="status"></p>
+      </div>
+    </section>
+
+    <p id="balance-note" class="balance-note" hidden>La journée de travail est terminée. Profitez de votre temps libre. <button type="button" id="balance-override" class="linklike">Afficher quand même</button></p>
+
+    <p id="mantra" class="mantra" data-widget="mantra"></p>
+
+    <ul id="countdown-strip" class="countdown-strip" data-widget="countdowns" aria-label="Comptes à rebours"></ul>
+  </main>
+
+  <footer class="bottom">
+    <div class="bottom-left">
+      <button type="button" id="settings-btn" class="round" data-panel="settings" aria-expanded="false" aria-label="Réglages" title="Réglages"><svg class="icon"><use href="#i-sliders"/></svg></button>
+      <div id="credit" class="credit" data-widget="credit">
+        <div class="credit-text"><a id="credit-author" rel="noopener"></a><span id="credit-location"></span></div>
+        <div class="credit-actions">
+          <button type="button" id="photo-fav" class="round small" aria-pressed="false" aria-label="Ajouter la photo aux favorites" title="Photo favorite"><svg class="icon"><use href="#i-heart"/></svg></button>
+          <button type="button" id="photo-ban" class="round small" aria-label="Ne plus afficher cette photo" title="Ne plus afficher cette photo"><svg class="icon"><use href="#i-ban"/></svg></button>
+          <button type="button" id="photo-next" class="round small" aria-label="Changer de photo" title="Changer de photo"><svg class="icon"><use href="#i-refresh"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <figure id="quote" class="quote" data-widget="quote" tabindex="0">
+      <blockquote id="quote-text"></blockquote>
+      <figcaption class="quote-meta">
+        <span id="quote-author"></span>
+        <button type="button" id="quote-fav" class="round small" aria-pressed="false" aria-label="Citation favorite" title="Citation favorite"><svg class="icon"><use href="#i-heart"/></svg></button>
+        <button type="button" id="quote-next" class="round small" aria-label="Autre citation" title="Autre citation"><svg class="icon"><use href="#i-refresh"/></svg></button>
+      </figcaption>
+    </figure>
+
+    <button type="button" id="todo-btn" class="corner todo-btn" data-widget="todo" data-panel="panel-todo" aria-expanded="false"><span>Tâches <span id="todo-count" class="count"></span></span><svg class="icon"><use href="#i-tasks"/></svg></button>
+  </footer>
+
+  <!-- ───────── Panneaux ───────── -->
+
+  <section id="panel-links" class="panel tl" data-widget="links" aria-label="Liens favoris">
+    <h2>Liens</h2>
+    <ul id="links-list" class="rows"></ul>
+    <p class="empty muted">Ajoutez vos sites préférés pour y accéder en un clic.</p>
+    <form id="links-form" class="add-row">
+      <svg class="icon"><use href="#i-plus"/></svg>
+      <input id="link-name" class="quiet" type="text" placeholder="Nom" aria-label="Nom du lien" maxlength="40" data-autofocus>
+      <input id="link-url" class="quiet" type="text" placeholder="adresse.fr" aria-label="Adresse du lien" required>
+      <button class="btn small">Ajouter</button>
+    </form>
+  </section>
+
+  <section id="panel-search" class="panel tl" data-widget="search" aria-label="Recherche">
+    <form id="search-form" class="add-row" role="search" autocomplete="off">
+      <svg class="icon"><use href="#i-search"/></svg>
+      <input id="search-input" class="quiet" type="search" placeholder="Rechercher" aria-label="Rechercher sur le Web" data-autofocus>
+    </form>
+  </section>
+
+  <section id="panel-tools" class="panel tl" aria-label="Outils">
+    <h2>Outils</h2>
+    <div class="tools">
+      <button type="button" data-widget="sounds" data-panel="panel-sounds"><svg class="icon"><use href="#i-sound"/></svg>Sons</button>
+      <button type="button" data-widget="notes" data-panel="panel-notes"><svg class="icon"><use href="#i-note"/></svg>Notes</button>
+      <button type="button" data-widget="habits" data-panel="panel-habits"><svg class="icon"><use href="#i-habit"/></svg>Habitudes</button>
+      <button type="button" data-widget="worldclocks" data-panel="panel-worldclocks"><svg class="icon"><use href="#i-globe"/></svg>Horloges</button>
+      <button type="button" data-widget="countdowns" data-panel="panel-countdowns"><svg class="icon"><use href="#i-calendar"/></svg>Échéances</button>
+    </div>
+  </section>
+
+  <section id="panel-pomodoro" class="panel tl" data-widget="pomodoro" aria-label="Mode Focus">
+    <h2>Mode Focus</h2>
+    <p id="pomo-phase" class="legend center-text">Concentration</p>
+    <div id="pomo-time" class="pomo-time" role="timer">25:00</div>
+    <div class="row centered">
+      <button type="button" id="pomo-toggle" class="btn" data-autofocus>Démarrer</button>
+      <button type="button" id="pomo-skip" class="btn ghost">Passer</button>
+      <button type="button" id="pomo-reset" class="btn ghost">Remettre à zéro</button>
+    </div>
+    <p id="pomo-count" class="muted center-text"></p>
+    <p class="legend">Durées (minutes)</p>
+    <div class="grid2">
+      <label class="field">Travail <input type="number" min="1" max="180" data-setting="pomodoro.work"></label>
+      <label class="field">Pause courte <input type="number" min="1" max="60" data-setting="pomodoro.short"></label>
+      <label class="field">Pause longue <input type="number" min="1" max="90" data-setting="pomodoro.long"></label>
+      <label class="field">Sessions avant pause longue <input type="number" min="1" max="12" data-setting="pomodoro.cycles"></label>
+    </div>
+    <label class="opt"><input type="checkbox" class="ck" data-setting="pomodoro.hideWidgets"> Masquer le reste pendant la session</label>
+    <label class="opt"><input type="checkbox" class="ck" data-setting="pomodoro.notify"> Notification à la fin</label>
+  </section>
+
+  <section id="panel-sounds" class="panel tl" data-widget="sounds" aria-label="Sons d'ambiance">
+    <h2>Sons d'ambiance</h2>
+    <ul id="sound-list" class="sound-list"></ul>
+    <p class="muted">Sons générés en direct dans votre navigateur. Mélangez-les à votre goût.</p>
+    <h2>Musique et radio</h2>
+    <div id="music-list" class="mp"></div>
+    <label class="field">Volume de la musique <input type="range" id="music-level" min="0" max="1" step="0.01"></label>
+    <p class="muted">« Lullaby » de _ghost (ccMixter), licence CC BY-NC 2.5. La lecture continue quand vous fermez l'onglet : l'icône Onze de Chrome permet de l'arrêter.</p>
+    <label class="field">Volume général <input type="range" min="0" max="1" step="0.01" data-setting="soundVolume"></label>
+  </section>
+
+  <section id="panel-notes" class="panel tl wide" data-widget="notes" aria-label="Bloc-notes">
+    <h2>Notes</h2>
+    <div id="notes-tabs" class="chips" role="tablist"></div>
+    <textarea id="note-text" rows="10" placeholder="Écrivez ici. La note est enregistrée automatiquement." aria-label="Contenu de la note" data-autofocus></textarea>
+    <div class="row between">
+      <span id="note-status" class="muted" role="status"></span>
+      <button type="button" id="note-delete" class="btn ghost small">Supprimer la note</button>
+    </div>
+  </section>
+
+  <section id="panel-habits" class="panel tl wide" data-widget="habits" aria-label="Suivi d'habitudes">
+    <h2>Habitudes</h2>
+    <ul id="habits-list" class="rows"></ul>
+    <p class="empty muted">Ajoutez une habitude à suivre chaque jour : lire, marcher, méditer…</p>
+    <form id="habits-form" class="add-row">
+      <svg class="icon"><use href="#i-plus"/></svg>
+      <input id="habit-name" class="quiet" type="text" placeholder="Nouvelle habitude" aria-label="Nouvelle habitude" maxlength="50" required data-autofocus>
+    </form>
+  </section>
+
+  <section id="panel-worldclocks" class="panel tl" data-widget="worldclocks" aria-label="Horloges du monde">
+    <h2>Horloges du monde</h2>
+    <ul id="wc-list" class="rows"></ul>
+    <p class="empty muted">Ajoutez un fuseau horaire, par exemple « America/Montreal » ou « Asia/Tokyo ».</p>
+    <form id="wc-form" class="stack">
+      <input id="wc-tz" type="text" list="wc-zones" placeholder="Fuseau (ex. Asia/Tokyo)" aria-label="Fuseau horaire" required data-autofocus>
+      <datalist id="wc-zones"></datalist>
+      <div class="row"><input id="wc-label" type="text" placeholder="Nom (facultatif)" aria-label="Nom de l'horloge" maxlength="30"><button class="btn">Ajouter</button></div>
+    </form>
+  </section>
+
+  <section id="panel-countdowns" class="panel tl" data-widget="countdowns" aria-label="Comptes à rebours">
+    <h2>Échéances</h2>
+    <ul id="cd-list" class="rows"></ul>
+    <p class="empty muted">Vacances, anniversaire, date limite : ajoutez une date qui compte.</p>
+    <form id="cd-form" class="stack">
+      <input id="cd-name" type="text" placeholder="Événement" aria-label="Nom de l'événement" maxlength="40" required data-autofocus>
+      <div class="row"><input id="cd-date" type="date" aria-label="Date de l'événement" required><button class="btn">Ajouter</button></div>
+    </form>
+    <label class="opt"><input type="checkbox" class="ck" data-setting="countdownsOnMain"> Afficher sous l'horloge</label>
+  </section>
+
+  <section id="panel-weather" class="panel tr wide" data-widget="weather" aria-label="Météo">
+    <div id="weather-cities" class="chips"></div>
+    <div id="weather-body" class="stack"></div>
+    <form id="weather-form" class="add-row">
+      <svg class="icon"><use href="#i-plus"/></svg>
+      <input id="weather-query" class="quiet" type="text" placeholder="Ajouter une ville" aria-label="Ajouter une ville" required>
+    </form>
+    <ul id="weather-results" class="rows"></ul>
+    <button type="button" id="weather-locate" class="btn ghost small">Utiliser ma position</button>
+  </section>
+
+  <section id="panel-todo" class="panel br" data-widget="todo" aria-label="Tâches">
+    <div class="split">
+      <aside id="todo-side" class="side" aria-label="Listes"></aside>
+      <div class="main">
+        <div class="row between">
+          <button type="button" id="todo-listsel" class="listsel" aria-expanded="false" title="Changer de liste"><span id="todo-listname"></span><svg class="icon"><use href="#i-chev"/></svg></button>
+          <div class="row tight">
+            <button type="button" id="todo-more" class="round small" aria-expanded="false" aria-label="Options de la liste" title="Options de la liste"><svg class="icon"><use href="#i-more"/></svg></button>
+            <button type="button" id="todo-expand" class="round small" aria-label="Agrandir ou réduire le panneau" title="Agrandir ou réduire"><svg class="icon"><use href="#i-expand"/></svg></button>
+          </div>
+        </div>
+        <div id="todo-menu" class="menu" hidden></div>
+        <div id="todo-more-menu" class="menu right" hidden>
+          <button type="button" class="lst" id="todo-rename">Renommer la liste</button>
+          <button type="button" class="lst" id="todo-clear">Effacer les tâches terminées</button>
+          <button type="button" class="lst danger" id="todo-list-delete">Supprimer la liste</button>
+        </div>
+        <ul id="todo-list" class="rows tasks"></ul>
+        <p id="todo-empty" class="empty muted">Rien à faire ici.</p>
+        <form id="todo-form" class="add-row">
+          <svg class="icon"><use href="#i-plus"/></svg>
+          <input id="todo-input" class="quiet" type="text" placeholder="Nouvelle tâche" aria-label="Nouvelle tâche" maxlength="200" autocomplete="off" data-autofocus>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── Réglages ───────── -->
+  <aside id="settings" class="panel drawer" aria-label="Réglages">
+    <div class="row between">
+      <h2 class="drawer-title">Réglages</h2>
+      <button type="button" class="round small panel-close" aria-label="Fermer les réglages"><svg class="icon"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="chips" role="tablist">
+      <button type="button" class="chip" role="tab" data-tab="general" aria-selected="true">Général</button>
+      <button type="button" class="chip" role="tab" data-tab="photos" aria-selected="false">Photos</button>
+      <button type="button" class="chip" role="tab" data-tab="look" aria-selected="false">Apparence</button>
+      <button type="button" class="chip" role="tab" data-tab="quotes" aria-selected="false">Citations</button>
+      <button type="button" class="chip" role="tab" data-tab="balance" aria-selected="false">Équilibre</button>
+      <button type="button" class="chip" role="tab" data-tab="account" aria-selected="false">Compte et sauvegarde</button>
+    </div>
+
+    <div class="tab" data-tab-panel="general" role="tabpanel">
+      <label class="field">Langue
+        <select data-setting="lang"><option value="fr">Français</option><option value="en">English</option></select>
+      </label>
+      <label class="field">Prénom <input type="text" maxlength="40" data-setting="name"></label>
+      <p class="legend">Affichés sur la page</p>
+      <div class="grid2">
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.clock"> Horloge</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.greeting"> Salutation</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.focus"> Objectif du jour</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.mantra"> Mantra</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.quote"> Citation</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.weather"> Météo</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.todo"> Tâches</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.links"> Liens favoris</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.search"> Bouton Chercher</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.searchbar"> Barre de recherche visible</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.pomodoro"> Mode Focus</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.sounds"> Sons d'ambiance</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.notes"> Bloc-notes</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.habits"> Habitudes</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.worldclocks"> Horloges du monde</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.countdowns"> Comptes à rebours</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="countdownsOnMain"> Échéances sous l'horloge</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="show.credit"> Crédit photo</label>
+      </div>
+      <p class="legend">Horloge</p>
+      <label class="opt"><input type="checkbox" class="ck" data-setting="clock24"> Format 24 heures</label>
+      <label class="opt"><input type="checkbox" class="ck" data-setting="clockSeconds"> Afficher les secondes</label>
+      <label class="field">Moteur de recherche
+        <select data-setting="searchEngine"><option value="google">Google</option><option value="bing">Bing</option><option value="duckduckgo">DuckDuckGo</option></select>
+      </label>
+      <label class="field">Unité de température
+        <select data-setting="tempUnit"><option value="c">Celsius (°C)</option><option value="f">Fahrenheit (°F)</option></select>
+      </label>
+    </div>
+
+    <div class="tab" data-tab-panel="photos" role="tabpanel" hidden>
+      <label class="field">Source des photos
+        <select data-setting="photoSource"><option value="online">Photos en ligne</option><option value="custom">Mes photos importées</option><option value="favorites">Mes photos favorites</option></select>
+      </label>
+      <label class="field">Changer de photo
+        <select data-setting="photoFrequency"><option value="day">Chaque jour</option><option value="hour">Toutes les heures</option><option value="tab">À chaque nouvel onglet</option></select>
+      </label>
+      <p class="legend">Thèmes</p>
+      <div class="grid2">
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="nature"> Nature</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="montagne"> Montagne</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="mer"> Mer</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="foret"> Forêt</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="ville"> Ville</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="desert"> Désert</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="etoiles"> Ciel étoilé</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="architecture"> Architecture</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="minimal"> Minimalisme</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="photoThemes" value="animaux"> Animaux</label>
+      </div>
+      <label class="field">Clé d'accès Unsplash (Access Key)
+        <input type="text" data-setting="unsplashKey" autocomplete="off" spellcheck="false" placeholder="Collez votre clé ici">
+      </label>
+      <p class="muted">Sans clé, Onze affiche les images remarquables de Wikimedia Commons (licences libres), selon vos thèmes. Avec une clé Unsplash, le choix est plus vaste. Hors ligne, un dégradé prend le relais.</p>
+      <p class="legend">Mes photos</p>
+      <label class="btn file-btn">Importer des images<input type="file" id="photo-import" accept="image/*" multiple></label>
+      <div id="custom-photos" class="thumbs"></div>
+      <p class="legend">Photos favorites</p>
+      <div id="fav-photos" class="thumbs"></div>
+      <p class="empty muted">Survolez le coin en bas à gauche et cliquez sur le cœur pour garder une photo.</p>
+      <p class="legend">Photos écartées</p>
+      <div class="row between"><span id="banned-count" class="muted"></span><button type="button" id="banned-reset" class="btn ghost small">Tout réautoriser</button></div>
+    </div>
+
+    <div class="tab" data-tab-panel="look" role="tabpanel" hidden>
+      <label class="field">Police
+        <select data-setting="font">
+          <option value="inter">Inter</option>
+          <option value="dmsans">DM Sans</option>
+          <option value="jakarta">Plus Jakarta Sans</option>
+          <option value="outfit">Outfit</option>
+          <option value="figtree">Figtree</option>
+          <option value="systeme">Police du système</option>
+          <option value="serif">Sérif</option>
+          <option value="mono">Machine à écrire</option>
+        </select>
+      </label>
+      <label class="field">Graisse de l'horloge
+        <select data-setting="clockWeight"><option value="700">Très forte</option><option value="600">Forte</option><option value="400">Moyenne</option><option value="300">Fine</option></select>
+      </label>
+      <label class="field">Taille de l'horloge
+        <select data-setting="clockSize"><option value="s">Petite</option><option value="m">Moyenne</option><option value="l">Grande</option><option value="xl">Très grande</option></select>
+      </label>
+      <p class="legend">Couleur d'accent</p>
+      <div class="row wrap"><div id="accent-swatches" class="swatches"></div><input type="color" data-setting="accent" aria-label="Couleur d'accent personnalisée"></div>
+      <label class="field">Panneaux
+        <select data-setting="panelTheme"><option value="dark">Sombres</option><option value="light">Clairs</option></select>
+      </label>
+    </div>
+
+    <div class="tab" data-tab-panel="quotes" role="tabpanel" hidden>
+      <label class="opt"><input type="checkbox" class="ck" data-setting="quoteFavsOnly"> N'afficher que mes citations favorites</label>
+      <p class="legend">Mes citations</p>
+      <form id="quote-form" class="stack">
+        <textarea id="quote-new-text" rows="2" placeholder="Texte de la citation" aria-label="Texte de la citation" maxlength="300" required></textarea>
+        <div class="row"><input id="quote-new-author" type="text" placeholder="Auteur (facultatif)" aria-label="Auteur" maxlength="60"><button class="btn">Ajouter</button></div>
+      </form>
+      <ul id="quote-custom-list" class="rows"></ul>
+      <p class="legend">Citations favorites</p>
+      <ul id="quote-fav-list" class="rows"></ul>
+      <p class="empty muted">Survolez la citation du jour et cliquez sur le cœur.</p>
+      <p class="legend">Mantras</p>
+      <p class="muted">Une phrase courte affichée sous l'objectif (à activer dans Général).</p>
+      <form id="mantra-form" class="row">
+        <input id="mantra-new" type="text" placeholder="Phrase courte" aria-label="Nouveau mantra" maxlength="80" required>
+        <button class="btn">Ajouter</button>
+      </form>
+      <ul id="mantra-list" class="rows"></ul>
+    </div>
+
+    <div class="tab" data-tab-panel="balance" role="tabpanel" hidden>
+      <p class="muted">En dehors de vos horaires de travail, Onze masque les tâches et l'objectif du jour pour vous aider à décrocher.</p>
+      <label class="opt"><input type="checkbox" class="ck" data-setting="balance.enabled"> Activer le mode Équilibre</label>
+      <div class="grid2">
+        <label class="field">Début <input type="time" data-setting="balance.start"></label>
+        <label class="field">Fin <input type="time" data-setting="balance.end"></label>
+      </div>
+      <p class="legend">Jours travaillés</p>
+      <div class="grid2">
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="balance.days" value="1"> Lundi</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="balance.days" value="2"> Mardi</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="balance.days" value="3"> Mercredi</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="balance.days" value="4"> Jeudi</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="balance.days" value="5"> Vendredi</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="balance.days" value="6"> Samedi</label>
+        <label class="opt"><input type="checkbox" class="ck" data-setting-list="balance.days" value="0"> Dimanche</label>
+      </div>
+    </div>
+
+    <div class="tab" data-tab-panel="account" role="tabpanel" hidden>
+      <p class="legend">Synchronisation Chrome</p>
+      <p class="muted">Vos tâches, notes, habitudes, liens et échéances suivent le compte Google connecté à Chrome, sans rien configurer. Activez la synchronisation de Chrome sur chaque appareil.</p>
+      <label class="opt"><input type="checkbox" class="ck" data-setting="chromeSync"> Synchroniser mes données avec mon compte Chrome</label>
+      <p id="csync-status" class="muted" role="status"></p>
+      <div class="row wrap"><button type="button" id="csync-now" class="btn">Synchroniser maintenant</button></div>
+      <details class="more">
+        <summary>Google Drive (avancé)</summary>
+      <p class="muted">Sans limite de taille, mais Google exige un identifiant client OAuth à créer une fois (étapes dans le README). Les données sont enregistrées dans l'espace privé de l'application sur votre Google Drive.</p>
+      <div id="cloud-out" class="stack">
+        <label class="field">Identifiant client OAuth (Client ID)
+          <input type="text" data-setting="googleClientId" autocomplete="off" spellcheck="false" placeholder="xxxxxxxx.apps.googleusercontent.com">
+        </label>
+        <p class="muted">URI de redirection à déclarer dans Google Cloud :</p>
+        <p id="cloud-redirect" class="code"></p>
+        <button type="button" id="cloud-signin" class="gbtn"><span class="g" aria-hidden="true">G</span>Se connecter avec Google</button>
+      </div>
+      <div id="cloud-in" class="stack" hidden>
+        <div class="account"><img id="cloud-avatar" alt="" referrerpolicy="no-referrer"><span class="grow"><span id="cloud-name"></span><span id="cloud-status" class="sub"></span></span></div>
+        <div class="row wrap"><button type="button" id="cloud-sync" class="btn">Synchroniser maintenant</button><button type="button" id="cloud-signout" class="btn ghost">Se déconnecter</button></div>
+        <label class="opt"><input type="checkbox" class="ck" data-setting="cloudAuto"> Synchronisation automatique</label>
+      </div>
+      </details>
+      <p class="legend">Sauvegarde manuelle</p>
+      <p class="muted">L'export contient tout : réglages et données (hors images importées).</p>
+      <div class="row wrap">
+        <button type="button" id="backup-export" class="btn ghost">Exporter (JSON)</button>
+        <label class="btn ghost file-btn">Importer<input type="file" id="backup-import" accept="application/json,.json"></label>
+        <button type="button" id="backup-reset" class="btn danger">Tout réinitialiser</button>
+      </div>
+    </div>
+    <p class="about">Onze, créé par <a href="https://www.akramtouabet.com" target="_blank" rel="noopener">Akram TOUABET</a></p>
+  </aside>
+</div>
+
+<!-- Accueil au premier lancement -->
+<div id="onboarding" class="onboarding" hidden>
+  <form id="onboarding-form">
+    <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+      <defs><clipPath id="logo-clip"><rect x="0" y="0" width="64" height="40"/></clipPath></defs>
+      <circle cx="32" cy="40" r="15" fill="#fff" clip-path="url(#logo-clip)"/>
+      <path d="M8 40h48M16 48h32M24 56h16" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </svg>
+    <p class="eyebrow">Bienvenue sur Onze</p>
+    <label for="onboarding-name">Comment vous appelez-vous ?</label>
+    <input id="onboarding-name" type="text" maxlength="40" autocomplete="off" required>
+    <button class="pill">Commencer</button>
+  </form>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

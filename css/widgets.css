@@ -1,0 +1,93 @@
+/* Onze — widgets posés sur la photo */
+
+.dock { display: flex; gap: 6px; }
+
+/* ── Barre de recherche (facultative) ── */
+.search-bar {
+  grid-column: 2; display: flex; align-items: center; gap: .6rem;
+  padding: .5rem 1rem; border-radius: 999px;
+  background: rgba(255, 255, 255, .13); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, .2);
+  transition: background-color .3s var(--ease), border-color .3s var(--ease);
+}
+.search-bar:focus-within { background: rgba(255, 255, 255, .2); border-color: rgba(255, 255, 255, .45); }
+.search-bar input { flex: 1; min-width: 0; background: none; border: 0; outline: none; font-weight: 400; text-shadow: var(--shadow); }
+.search-bar input::placeholder { color: rgba(255, 255, 255, .75); }
+input[type="search"]::-webkit-search-cancel-button { filter: invert(1); opacity: .6; }
+
+/* ── Météo (coin haut droit) ── */
+.weather { grid-column: 3; justify-self: end; align-items: flex-end; }
+.weather b { font-size: 1.6rem; font-weight: 500; line-height: 1.15; }
+.weather #weather-icon { text-shadow: none; }
+
+/* ── Horloge et salutation ── */
+.clock {
+  font-size: var(--clock-size); font-weight: var(--clock-weight);
+  line-height: .95; letter-spacing: -.045em; font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, .28);
+}
+.clock-sec { font-size: .42em; font-weight: 500; letter-spacing: -.02em; opacity: .85; }
+.clock-ampm { font-size: .18em; font-weight: 600; margin-left: .5em; letter-spacing: .06em; }
+
+.greeting { margin-top: .5rem; font-size: clamp(1.8rem, 3.3vw, 3.1rem); font-weight: 600; letter-spacing: -.015em; text-wrap: balance; }
+.name { outline: none; border-bottom: 2px solid transparent; transition: border-color .25s; cursor: text; }
+.name:hover, .name:focus { border-bottom-color: rgba(255, 255, 255, .75); }
+
+/* ── Objectif du jour ── */
+.goal { margin-top: clamp(1.6rem, 5vh, 3.5rem); width: min(100%, 760px); }
+.goal form { display: flex; flex-direction: column; align-items: center; }
+.goal form label { font-size: clamp(1.3rem, 2.4vw, 2.2rem); font-weight: 400; letter-spacing: -.01em; }
+.goal form input { margin-top: .4rem; transition: border-color .5s var(--ease); }
+/* Fondu enchaîné entre la question et l'objectif saisi. */
+.goal > * { transition: opacity .38s ease, transform .38s ease, filter .38s ease; }
+.goal.leaving > * { opacity: 0; transform: translateY(-6px) scale(.985); filter: blur(8px); pointer-events: none; }
+.goal.entering > * > * { animation: goal-in .95s cubic-bezier(.22, .61, .36, 1) both; }
+.goal.entering > * > :nth-child(2) { animation-delay: .12s; }
+.goal.entering > * > :nth-child(3) { animation-delay: .22s; }
+@keyframes goal-in { from { opacity: 0; transform: translateY(10px); filter: blur(10px); } to { opacity: 1; transform: none; filter: none; } }
+.goal-row { display: flex; align-items: center; justify-content: center; gap: .4rem; margin-top: .3rem; }
+.goal-row label { display: inline-flex; align-items: center; gap: .9rem; font-size: clamp(1.5rem, 2.8vw, 2.6rem); font-weight: 400; cursor: pointer; }
+.goal-row .ck { width: 1em; height: 1em; border: 2.5px solid #fff; border-radius: .22em; }
+.goal-row .ck:checked { border-color: var(--accent); }
+.goal-row .ck:checked::after { width: .5em; height: .28em; border-width: .12em; }
+#focus-text { background: linear-gradient(currentColor, currentColor) no-repeat 0 56% / 0 2px; transition: background-size .45s var(--ease), opacity .3s; }
+#focus-done:checked + #focus-text { background-size: 100% 2px; opacity: .7; }
+#focus-clear { opacity: 0; }
+.goal-row:hover #focus-clear, #focus-clear:focus-visible { opacity: .85; }
+.cheer { min-height: 1.5em; margin-top: .3rem; color: var(--accent); font-weight: 600; }
+.cheer:not(:empty) { animation: rise .5s var(--ease) both; }
+
+.balance-note { margin-top: 2rem; font-size: 1.1rem; font-weight: 400; }
+body.in-focus .balance-note { display: none; }
+
+.mantra { margin-top: 1rem; font-size: 1.2rem; font-weight: 400; font-style: italic; }
+.mantra:empty { display: none; }
+
+.countdown-strip { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.6rem; margin-top: 1.2rem; font-size: .95rem; font-weight: 400; }
+.countdown-strip:empty { display: none; }
+.countdown-strip strong { font-weight: 700; margin-left: .4em; }
+
+/* ── Mode Focus (affichage central) ── */
+.focus-display { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; }
+.fd-actions { display: flex; gap: .6rem; }
+
+/* ── Crédit photo ── */
+.credit { display: flex; align-items: center; gap: .4rem; min-width: 0; font-size: .9rem; }
+.credit-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.credit-text a { text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.credit-text a[href]:hover { text-decoration: underline; }
+#credit-location { font-size: .82rem; font-weight: 400; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#credit-location:empty { display: none; }
+.credit-actions { display: flex; opacity: 0; transform: translateX(-6px); transition: opacity .3s var(--ease), transform .3s var(--ease); }
+.bottom-left:hover .credit-actions, .credit-actions:focus-within { opacity: 1; transform: none; }
+
+/* ── Citation ── */
+.quote { text-align: center; justify-self: center; max-width: 640px; padding: .2rem .5rem; border-radius: 10px; }
+.quote blockquote { font-size: clamp(1.05rem, 1.5vw, 1.35rem); font-weight: 500; line-height: 1.32; text-wrap: balance; transition: transform .45s var(--ease), opacity .3s; }
+.quote blockquote.swap { opacity: 0; }
+.quote-meta { display: flex; align-items: center; justify-content: center; gap: .2rem; height: 0; font-size: .88rem; font-weight: 400; opacity: 0; transition: opacity .45s var(--ease), transform .45s var(--ease); }
+.quote:hover blockquote, .quote:focus-within blockquote, .quote:focus blockquote { transform: translateY(-1.5rem); }
+.quote:hover .quote-meta, .quote:focus-within .quote-meta, .quote:focus .quote-meta { opacity: 1; transform: translateY(-.7rem); }
+
+.todo-btn { justify-self: end; }
+.count { font-weight: 400; opacity: .75; font-variant-numeric: tabular-nums; }

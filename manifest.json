@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Onze — Nouvel onglet",
+  "short_name": "Onze",
+  "version": "1.1.0",
+  "description": "Un nouvel onglet apaisant : photo du jour, horloge, objectif, tâches, météo, mode Focus, musique, habitudes et synchronisation.",
+  "author": "Akram TOUABET",
+  "homepage_url": "https://www.akramtouabet.com",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1hwiyEkAO8zwTPCR2FjRKetVRFhfcgBJJa4zwE0/R33IKKpAcOJzBlGBXwCdXCvAG5AAMnqfUd7J30GIt5MIg+8Sy7GBVkBBJZQpIFi1niDmmKP8sbPyKuUYEcOeHIq2UOsjHj01UiftGLv7ckBIl1i4CuvIrWF1Ga9M2uJvEA3rf5duBmblq9s0/SbPW6+z84BJ0au5KF1QGTrGR/2Q/wsy+crhSyVnLpWMN6/Zz/XkH4qFlUYhVIL4iry48W8Ppp/aC/vozY6KIIu7NakRjix7ITJLIbaB4mqzkhuEp6IITv5UGQI4O0Ziz+RTXVgvEfHYEhxH92jDHHLTDX0/jQIDAQAB",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "action": {
+    "default_title": "Onze",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "geolocation",
+    "notifications",
+    "alarms",
+    "favicon",
+    "identity",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "https://api.unsplash.com/*",
+    "https://commons.wikimedia.org/*",
+    "https://picsum.photos/*",
+    "https://fastly.picsum.photos/*",
+    "https://api.open-meteo.com/*",
+    "https://geocoding-api.open-meteo.com/*",
+    "https://www.googleapis.com/*",
+    "https://oauth2.googleapis.com/*"
+  ]
+}
