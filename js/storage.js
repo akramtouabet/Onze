@@ -33,7 +33,7 @@ const local = area('local');
 /** Données envoyées vers le compte Google quand la synchronisation est active. */
 export const SYNC_KEYS = ['todos', 'links', 'notes', 'habits', 'countdowns', 'worldClocks', 'quotes', 'mantras', 'focus', 'photoFavs', 'photoBanned', 'weatherCities'];
 /** Clés propres à l'appareil : jamais exportées ni synchronisées. */
-const PRIVATE_KEYS = ['cloudAuth', 'syncMeta', 'pomodoroNotice', 'musicState'];
+const PRIVATE_KEYS = ['cloudAuth', 'syncMeta', 'pomodoroNotice', 'musicState', 'timerNotice', 'popupTimer', 'popupStopwatch', 'popupTimeMode', 'popupSection'];
 
 export const DEFAULTS = {
   name: '',

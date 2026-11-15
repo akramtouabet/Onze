@@ -42,8 +42,27 @@ function stop() {
   fade(player, 0, 500, () => release(player));
 }
 
+/** Sonnerie de fin de minuteur : trois notes brèves, deux fois. */
+function beep() {
+  const ctx = new AudioContext();
+  [0, 0.22, 0.44, 1.1, 1.32, 1.54].forEach((delay) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const at = ctx.currentTime + delay;
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.0001, at);
+    gain.gain.exponentialRampToValueAtTime(0.25, at + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.18);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(at);
+    osc.stop(at + 0.2);
+  });
+  setTimeout(() => ctx.close(), 2500);
+}
+
 chrome.runtime.onMessage.addListener((message) => {
   if (message?.target !== 'offscreen') return;
+  if (message.cmd === 'beep') { beep(); return; }
   if (message.cmd === 'play') play(message);
   else if (message.cmd === 'stop') stop();
   else if (message.cmd === 'volume' && audio) { clearInterval(fadeTimer); audio.volume = Math.max(0, Math.min(1, message.volume)); }

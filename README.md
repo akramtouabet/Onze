@@ -10,7 +10,7 @@ HTML, CSS et JavaScript sans framework ni étape de build. Tout est gratuit et d
 onze/
 ├── manifest.json          Déclaration de l'extension (permissions, page de nouvel onglet)
 ├── newtab.html            Structure de la page : widgets, panneaux, réglages
-├── popup.html             Fenêtre de l'icône de l'extension : lecteur de musique
+├── popup.html             Fenêtre de l'icône de l'extension : musique, minuteur, chronomètre, notes
 ├── offscreen.html         Page cachée qui joue la musique, onglet fermé
 ├── service-worker.js      Notification de fin de session Focus, pilotage de la musique
 ├── fonts/                 Polices embarquées (10 fichiers .woff2)
@@ -46,6 +46,7 @@ onze/
 │   ├── music-ui.js        Sélecteur Musique / Radio
 │   ├── offscreen.js       Lecteur de la page cachée
 │   ├── popup.js           Fenêtre de l'icône
+│   ├── popup-timer.js     Minuteur et chronomètre de la fenêtre de l'icône
 │   ├── i18n.js            Langue de l'interface (traduction de la page)
 │   ├── i18n-en.js         Dictionnaire anglais
 │   ├── notes.js           Bloc-notes
@@ -92,6 +93,14 @@ La police, la graisse et la taille de l'horloge, la couleur d'accent et le thèm
 **Outils → Sons → Musique et radio** : deux onglets. « Musique » propose « Lullaby » en boucle ; « Radio » propose les stations en direct classées par pays (France : FIP, FIP Jazz, FIP Groove, France Musique ; Autriche : LoungeFM ; Royaume-Uni : Classic FM ; États-Unis : Radio Paradise, Paradise Mellow, KEXP). Une seule source joue à la fois.
 
 La musique est jouée en arrière-plan : elle continue quand vous fermez l'onglet Onze. Pour la changer, régler son volume ou l'arrêter, cliquez sur l'icône Onze dans la barre de Chrome (épinglez-la depuis le menu des extensions, l'icône en forme de pièce de puzzle). Les sons d'ambiance, eux, s'arrêtent avec l'onglet.
+
+## Minuteur et chronomètre
+
+La fenêtre de l'icône a une deuxième section, **Minuteur**, avec un minuteur (durées prédéfinies ou nombre de minutes libre) et un chronomètre. Les deux continuent de tourner quand la fenêtre se ferme ; une notification signale la fin du minuteur.
+
+## Notes dans la fenêtre de l'icône
+
+La section **Notes** de la fenêtre de l'icône affiche les mêmes notes que le bloc-notes du nouvel onglet : ce que vous écrivez d'un côté apparaît de l'autre.
 
 ## Langue
 

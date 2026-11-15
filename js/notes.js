@@ -1,4 +1,6 @@
 // Onze — bloc-notes : plusieurs notes, enregistrement automatique.
+// Utilisé par le nouvel onglet et par la fenêtre de l'icône (mêmes identifiants d'éléments) :
+// les deux partagent la donnée « notes » et se mettent à jour l'un l'autre.
 import { store } from './storage.js';
 import { $, debounce, el, uid } from './utils.js';
 import { lang, locale, t } from './i18n.js';
@@ -8,10 +10,15 @@ let db = { items: [], active: null }; // items : { id, text, updated }
 const current = () => db.items.find((n) => n.id === db.active) || null;
 const titleOf = (note) => note.text.trim().split('\n')[0].slice(0, 24) || 'Nouvelle note';
 
-const persist = debounce(() => {
+let dirty = false;
+function saveNow() {
+  if (!dirty) return;
+  dirty = false;
+  persist.cancel();
   store.set('notes', db);
   $('#note-status').textContent = 'Enregistré';
-}, 400);
+}
+const persist = debounce(saveNow, 300);
 
 function addNote() {
   const note = { id: uid(), text: '', updated: Date.now() };
@@ -51,7 +58,23 @@ export async function init() {
     $('#note-status').textContent = 'Enregistrement…';
     $('#note-delete').disabled = false;
     renderTabs();
+    dirty = true;
     persist();
+  });
+  // Rien n'est perdu si la fenêtre se ferme juste après une frappe.
+  $('#note-text').addEventListener('blur', saveNow);
+  addEventListener('pagehide', saveNow);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) saveNow(); });
+
+  // Modification faite ailleurs (autre onglet, fenêtre de l'icône) : on l'adopte.
+  store.watch('notes', (incoming) => {
+    if (!incoming?.items || dirty || JSON.stringify(incoming) === JSON.stringify(db)) return;
+    db = incoming;
+    const field = $('#note-text');
+    const [start, end] = [field.selectionStart, field.selectionEnd];
+    const focused = document.activeElement === field;
+    render();
+    if (focused) field.setSelectionRange(Math.min(start, field.value.length), Math.min(end, field.value.length));
   });
 
   $('#note-delete').addEventListener('click', () => {

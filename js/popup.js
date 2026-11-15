@@ -1,9 +1,11 @@
-// Onze — fenêtre de l'icône de l'extension : choisir, régler et arrêter la musique.
+// Onze — fenêtre de l'icône de l'extension : musique et radio, minuteur et chronomètre, notes.
 import { store } from './storage.js';
 import { initI18n, t } from './i18n.js';
 import { music } from './music.js';
 import { TRACKS } from './tracks.js';
 import { mountMusicPicker } from './music-ui.js';
+import { mountTimer } from './popup-timer.js';
+import * as notes from './notes.js';
 
 const $ = (selector) => document.querySelector(selector);
 let picker = null;
@@ -30,6 +32,18 @@ async function boot() {
   $('#stop').addEventListener('click', () => music.stop());
 
   await music.init(render);
+
+  // Sections : Musique | Minuteur | Notes. On rouvre la dernière, ou le minuteur s'il tourne.
+  const timer = await mountTimer($('#timer'));
+  await notes.init();
+  const show = (section) => {
+    for (const button of document.querySelectorAll('.sections button')) button.setAttribute('aria-selected', String(button.dataset.section === section));
+    for (const node of document.querySelectorAll('.section')) node.hidden = node.id !== `sec-${section}`;
+    store.set('popupSection', section);
+    if (section === 'notes') $('#note-text').focus();
+  };
+  for (const button of document.querySelectorAll('.sections button')) button.addEventListener('click', () => show(button.dataset.section));
+  show(timer.running() ? 'time' : await store.get('popupSection', 'music'));
 }
 
 boot();

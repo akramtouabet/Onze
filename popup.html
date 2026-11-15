@@ -8,6 +8,13 @@
   <link rel="stylesheet" href="css/popup.css">
 </head>
 <body>
+  <nav class="sections" role="tablist" aria-label="Sections">
+    <button type="button" role="tab" data-section="music">Musique</button>
+    <button type="button" role="tab" data-section="time">Minuteur</button>
+    <button type="button" role="tab" data-section="notes">Notes</button>
+  </nav>
+
+  <section id="sec-music" class="section">
   <header>
     <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
       <defs><clipPath id="logo-clip"><rect x="0" y="0" width="64" height="40"/></clipPath></defs>
@@ -29,6 +36,21 @@
 
   <button type="button" id="stop" class="stop" disabled>Arrêter la lecture</button>
   <p class="hint">La lecture continue quand vous fermez cette fenêtre ou l'onglet Onze.</p>
+  </section>
+
+  <section id="sec-time" class="section" hidden>
+    <div id="timer"></div>
+    <p class="hint">Le minuteur et le chronomètre continuent quand cette fenêtre se ferme. Une notification signale la fin du minuteur.</p>
+  </section>
+
+  <section id="sec-notes" class="section" hidden>
+    <div id="notes-tabs" class="chips" role="tablist"></div>
+    <textarea id="note-text" rows="9" placeholder="Écrivez ici. La note est enregistrée automatiquement." aria-label="Contenu de la note"></textarea>
+    <div class="note-foot">
+      <span id="note-status" class="note-status" role="status"></span>
+      <button type="button" id="note-delete" class="linklike">Supprimer la note</button>
+    </div>
+  </section>
 
   <p class="about">Onze, créé par <a href="https://www.akramtouabet.com" target="_blank" rel="noopener">Akram TOUABET</a></p>
 

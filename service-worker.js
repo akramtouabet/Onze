@@ -1,21 +1,47 @@
 // Onze — service worker.
-// 1. Affiche la notification de fin de session Focus même si aucun nouvel onglet n'est ouvert.
+// 1. Affiche la notification de fin de session Focus ou de minuteur, même sans onglet ouvert.
 // 2. Pilote la musique : elle est jouée par une page cachée (« offscreen »), ce qui la laisse
 //    continuer quand l'onglet Onze est fermé. L'état est publié dans chrome.storage.local
 //    (« musicState »), que le nouvel onglet et la fenêtre de l'icône observent.
 import { TRACKS, DEFAULT_MUSIC_LEVEL, DEFAULT_VOLUME } from './js/tracks.js';
 
+const NOTICES = { 'onze-pomodoro': 'pomodoroNotice', 'onze-timer': 'timerNotice' };
+
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name !== 'onze-pomodoro') return;
-  const { pomodoroNotice: notice } = await chrome.storage.local.get('pomodoroNotice');
+  const key = NOTICES[alarm.name];
+  if (!key) return;
+  const { [key]: notice } = await chrome.storage.local.get(key);
+  if (alarm.name === 'onze-timer') {
+    // Minuteur de la fenêtre de l'icône : le remet à zéro pour sa prochaine ouverture.
+    const { popupTimer } = await chrome.storage.local.get('popupTimer');
+    if (popupTimer) await chrome.storage.local.set({ popupTimer: { ...popupTimer, endsAt: null, remaining: null, finishedAt: Date.now() } });
+    // Signaux qui ne dépendent pas des notifications du système : pastille sur l'icône et sonnerie.
+    chrome.action.setBadgeBackgroundColor({ color: '#f4a259' });
+    chrome.action.setBadgeText({ text: '0:00' });
+    chime().catch(() => {});
+  }
   if (!notice) return;
-  chrome.notifications.create('onze-pomodoro-' + Date.now(), {
+  chrome.notifications.create(alarm.name + '-' + Date.now(), {
     type: 'basic',
     iconUrl: chrome.runtime.getURL('icons/icon128.png'),
     title: notice.title,
     message: notice.message,
+    priority: 2,
+    requireInteraction: alarm.name === 'onze-timer', // reste affichée jusqu'à ce qu'on la ferme
   });
 });
+
+/** Sonnerie de fin de minuteur, jouée par la page cachée (refermée ensuite si aucune musique ne joue). */
+async function chime() {
+  const had = await chrome.offscreen.hasDocument();
+  await ensurePlayer();
+  await toPlayer({ cmd: 'beep' });
+  if (had) return;
+  setTimeout(async () => {
+    const { musicState } = await chrome.storage.local.get('musicState');
+    if (!musicState?.id) chrome.offscreen.closeDocument().catch(() => {});
+  }, 3000);
+}
 
 // ── Musique ──
 
